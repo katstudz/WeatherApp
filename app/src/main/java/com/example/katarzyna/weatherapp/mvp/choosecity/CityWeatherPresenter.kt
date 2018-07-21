@@ -2,13 +2,14 @@ package com.example.katarzyna.weatherapp.mvp.choosecity
 
 import com.example.katarzyna.weatherapp.datamodel.WeatherData
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
+import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
-
     private val openWeatherMap = ApiClient.create()
     private lateinit var view: CityWeatherContract.View
+    private lateinit var lastCityName: String
 
     override fun attachView(view: CityWeatherContract.View) {
         this.view = view
@@ -20,12 +21,15 @@ class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ response: WeatherData ->
                    setWeather(response)
-
+                   lastCityName = response.cityName!!
                }, { error ->
                    view.showErrorAlert()
                })
     }
 
+    override fun getLastCityName(): String {
+        return lastCityName
+    }
 
 
     private fun setWeather(weatherData: WeatherData){

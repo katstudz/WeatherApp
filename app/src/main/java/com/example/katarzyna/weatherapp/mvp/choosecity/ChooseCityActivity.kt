@@ -1,20 +1,25 @@
 package com.example.katarzyna.weatherapp.mvp.choosecity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import com.example.katarzyna.weatherapp.R
 import com.example.katarzyna.weatherapp.datamodel.WeatherData
+import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivity
+import com.example.katarzyna.weatherapp.utils.Common
+import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import kotlinx.android.synthetic.main.basic_weather_info.*
-import android.app.Activity
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 
 
 class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
-    lateinit var cityWeatherPresenter:CityWeatherPresenter
+    lateinit var cityWeatherPresenter: CityWeatherPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +36,9 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         }
 
         moreDetails.setOnClickListener {
-//            val mapIntent = Intent(this, MapsActivity::class.java)
-//            mapIntent.putExtra(Common.DRONE_MESSAGE_KEY, drone_message)
-//            startActivity(mapIntent)
+            val weatherDetailsIntent = Intent(this, WeatherDetailsActivity::class.java)
+            weatherDetailsIntent.putExtra(Common.CITY_NAME, cityWeatherPresenter.getLastCityName())
+            startActivity(weatherDetailsIntent)
         }
     }
 
@@ -42,6 +47,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         temperature.text = "${cityWeatherInfo.main!!.temp.toString()} K"
         humidity.text = "${getString(R.string.humidity)} ${cityWeatherInfo.main!!.humidity}%"
         cloudy.text = "${getString(R.string.clouds)} ${cityWeatherInfo.clouds!!.all}%"
+        moreDetails.visibility = VISIBLE
     }
 
     override fun setWeatherIcon(weatherCondition: WeatherConditionEnum) { //TODO find more icon
@@ -53,7 +59,6 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
                 icon = ContextCompat.getDrawable(this, R.drawable.ic_search_24dp)!!
             }
         }
-
         weatherIcon.setImageDrawable(icon)
     }
 

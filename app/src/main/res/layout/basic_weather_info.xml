@@ -53,8 +53,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/more_details"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
         app:layout_constraintTop_toBottomOf="@+id/humidity" />
 
@@ -75,20 +76,20 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="@string/find_city_desctiprion"
         app:layout_constraintStart_toEndOf="@+id/cityNameEditText"
         app:layout_constraintTop_toBottomOf="@+id/moreDetails"
-        app:srcCompat="@drawable/ic_search_24dp"
-        android:contentDescription="@string/find_city_desctiprion" />
+        app:srcCompat="@drawable/ic_search_24dp" />
 
     <ImageButton
         android:id="@+id/setCityAsFavourite"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="@string/set_city_favourite_desctiprion"
         app:layout_constraintStart_toEndOf="@+id/findCityWeather"
         app:layout_constraintTop_toBottomOf="@+id/moreDetails"
-        app:srcCompat="@drawable/ic_favorite_black_24dp"
-        android:contentDescription="@string/set_city_favourite_desctiprion"/>
+        app:srcCompat="@drawable/ic_favorite_black_24dp" />
 </android.support.constraint.ConstraintLayout>
