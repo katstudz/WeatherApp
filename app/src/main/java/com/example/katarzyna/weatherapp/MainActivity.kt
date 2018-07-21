@@ -1,5 +1,7 @@
 package com.example.katarzyna.weatherapp
 
+import android.app.FragmentManager
+import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.katarzyna.weatherapp.datamodel.WeatherData
@@ -9,6 +11,16 @@ import io.reactivex.schedulers.Schedulers
 
 
 class MainActivity : AppCompatActivity() {
+
+
+    var CITY_WEATHER_FRAGMENT= "CITY_WEATHER_FRAGMENT"
+    var DETAILS_WEATEHR_FRAGMENT = "DETAILS_WEATEHR_FRAGMENT"
+
+    inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
+        val fragmentTransaction = beginTransaction()
+        fragmentTransaction.func()
+        fragmentTransaction.commit()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
