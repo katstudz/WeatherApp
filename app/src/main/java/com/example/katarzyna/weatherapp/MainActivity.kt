@@ -6,10 +6,6 @@ import com.example.katarzyna.weatherapp.datamodel.WeatherData
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.basic_weather_info)
 
         val openWeatherMap = ApiClient.create()
         openWeatherMap.getWeather("e7fdc6f6a7f81c97bdd2ccb1c8ecd0e4","Kraków")
