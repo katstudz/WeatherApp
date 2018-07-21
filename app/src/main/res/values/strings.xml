@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="api_weather_key">e7fdc6f6a7f81c97bdd2ccb1c8ecd0e4</string>
+    <string name="humidity">humidity: </string>
+    <string name="clouds">clouds: </string>
+    <string name="default_city">Las Vegas</string>
+    <string name="more_details">more details</string>
+    <string name="find_city_desctiprion">find</string>
+    <string name="set_city_favourite_desctiprion">set favourite</string>
+    <string name="temp" />
+    <string name="title_city_weather_error_message">Something goes wrong</string>
+    <string name="text_city_weather_error_message">Check if city\'s name is correct or your internet connection.</string>
 </resources>
