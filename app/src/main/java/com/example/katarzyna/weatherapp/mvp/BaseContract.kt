@@ -7,7 +7,6 @@ interface BaseContract {
         fun attachView(view : BaseView)
     }
 
-    interface BaseView {
-    }
+    interface BaseView
 
 }

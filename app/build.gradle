@@ -48,4 +48,8 @@ dependencies {
 
     //charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    //location
+    implementation "com.google.android.gms:play-services-location:15.0.1"
+
 }

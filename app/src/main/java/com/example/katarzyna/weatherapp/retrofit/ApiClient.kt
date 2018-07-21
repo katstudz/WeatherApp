@@ -1,5 +1,6 @@
 package com.example.katarzyna.weatherapp.retrofit
 
+import com.example.katarzyna.weatherapp.datamodel.ForecastResponse
 import com.example.katarzyna.weatherapp.datamodel.WeatherData
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
@@ -12,7 +13,13 @@ import retrofit2.http.Query
 interface ApiClient {
 
     @GET("weather")
-    fun getWeather(@Query("apikey")  apiKey:String, @Query("q") city: String): Observable<WeatherData>
+    fun getAcctualWeatherForCity(@Query("apikey")  apiKey:String,
+                                 @Query("q") city: String): Observable<WeatherData>
+
+    @GET("forecast")
+    fun getForecast(@Query("apikey")  apiKey:String,
+                    @Query("q") city: String,
+                    @Query("cnt") count: Long = 0): Observable<ForecastResponse>
 
 
     companion object Factory {

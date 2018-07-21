@@ -6,7 +6,8 @@ import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
+class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Presenter {
+
     private val openWeatherMap = ApiClient.create()
     private lateinit var view: CityWeatherContract.View
     private lateinit var lastCityName: String
@@ -16,7 +17,7 @@ class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
     }
 
     override fun getWeatherInfoForCity(cityName: String) {
-       openWeatherMap.getWeather(apiKey,cityName)
+       openWeatherMap.getAcctualWeatherForCity(apiKey,cityName)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ response: WeatherData ->
@@ -26,11 +27,6 @@ class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
                    view.showErrorAlert()
                })
     }
-
-    override fun getLastCityName(): String {
-        return lastCityName
-    }
-
 
     private fun setWeather(weatherData: WeatherData){
         view.setWeatherInfoForCity(weatherData)
@@ -48,6 +44,21 @@ class CityWeatherPresenter(val apiKey: String) : CityWeatherContract.Presenter {
             return WeatherConditionEnum.CLOUDLY
         else
             return WeatherConditionEnum.SUNNY
+    }
+
+    override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
+        openWeatherMap.getAcctualWeatherForCity(apiKey, cityName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response: WeatherData ->
+                    view.setCityAsFavourite(cityName)
+                }, { error ->
+                    view.showErrorAlert() //TODO two other error message?
+                })
+    }
+
+    override fun getLastCityName(): String {
+        return lastCityName
     }
 
 

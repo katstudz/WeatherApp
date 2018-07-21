@@ -9,11 +9,13 @@ class CityWeatherContract {
     interface Presenter: BaseContract.BasePresenter<View>{
         fun getWeatherInfoForCity(cityName: String)
         fun getLastCityName():String
+        fun checkCityNameCorrectSetAsFavourite(cityName: String)
     }
 
     interface View: BaseContract.BaseView {
         fun setWeatherInfoForCity( cityWeatherInfo: WeatherData)
         fun setWeatherIcon(weatherCondition: WeatherConditionEnum)
         fun showErrorAlert()
+        fun setCityAsFavourite(cityName: String)
     }
 }
