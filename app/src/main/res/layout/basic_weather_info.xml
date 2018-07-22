@@ -14,8 +14,8 @@
         android:layout_marginStart="52dp"
         android:layout_marginTop="154dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favorite_black_24dp" />
+        app:layout_constraintTop_toTopOf="parent"/>
+        <!--app:srcCompat="@drawable/ic_favorite_black_24dp" />-->
 
     <TextView
         android:id="@+id/temperature"
@@ -61,9 +61,9 @@
 
     <EditText
         android:id="@+id/cityNameEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="167dp"
         android:layout_height="49dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -75,7 +75,7 @@
         android:id="@+id/findCityWeather"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:contentDescription="@string/find_city_desctiprion"
         app:layout_constraintStart_toEndOf="@+id/cityNameEditText"
@@ -92,4 +92,26 @@
         app:layout_constraintStart_toEndOf="@+id/findCityWeather"
         app:layout_constraintTop_toBottomOf="@+id/moreDetails"
         app:srcCompat="@drawable/ic_favorite_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/acctual_position"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toEndOf="@+id/setCityAsFavourite"
+        app:layout_constraintTop_toBottomOf="@+id/moreDetails"
+        app:srcCompat="@drawable/ic_my_location__24dp" />
+
+    <ImageView
+        android:id="@+id/before_image"
+        android:layout_width="280dp"
+        android:layout_height="222dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_cloud_24dp" />
 </android.support.constraint.ConstraintLayout>

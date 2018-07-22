@@ -10,11 +10,12 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.example.katarzyna.weatherapp.R
-import com.example.katarzyna.weatherapp.datamodel.WeatherData
+import com.example.katarzyna.weatherapp.datamodel.WeatherResponse
 import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivity
 import com.example.katarzyna.weatherapp.utils.Common
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
@@ -36,10 +37,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
         cityWeatherPresenter.attachView(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//        fusedLocationClient.lastLocation
-//                .addOnSuccessListener { location : Location? ->
-//                    // Got last known location. In some rare situations this can be null.
-//                }
+
 
         setFavouritePlaceWeather()
         setButtons()
@@ -51,7 +49,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
 
         if(cityName!= NONE){
             cityWeatherPresenter.getWeatherInfoForCity(cityName)
-            cityNameEditText.setText(cityName, TextView.BufferType.EDITABLE);
+            cityNameEditText.setText(cityName, TextView.BufferType.EDITABLE)
         }
 
     }
@@ -67,12 +65,36 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
             cityWeatherPresenter.checkCityNameCorrectSetAsFavourite(cityNameEditText.text.toString())
         }
 
+        acctual_position.setOnClickListener {
+            setAcctualPosition()
+        }
 
         moreDetails.setOnClickListener {
             val weatherDetailsIntent = Intent(this, WeatherDetailsActivity::class.java)
             weatherDetailsIntent.putExtra(Common.CITY_NAME, cityWeatherPresenter.getLastCityName())
             startActivity(weatherDetailsIntent)
         }
+    }
+    fun setAcctualPosition(){ //TODO get location
+        try {
+            fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location : Location? ->
+                        println(location!!.latitude)
+                        cityWeatherPresenter.getWeatherForAcctualPosition(location!!)
+                    }
+            println("XXXXXXXx")
+
+        }
+        catch (e:SecurityException){
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(R.string.no_know_location_permission)
+            val dialog = builder.create()
+            dialog.show()
+        }
+    }
+
+    override fun setAcctualLocationCityName(cityName: String) {
+        cityNameEditText.setText(cityName, TextView.BufferType.EDITABLE)
     }
 
     override fun setCityAsFavourite(cityName: String) {
@@ -83,11 +105,13 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     }
 
 
-    override fun setWeatherInfoForCity(cityWeatherInfo: WeatherData) {
+    override fun setWeatherInfoForCity(cityWeatherInfo: WeatherResponse) {
         temperature.text = "${cityWeatherInfo.main!!.temp.toString()} K"
         humidity.text = "${getString(R.string.humidity)} ${cityWeatherInfo.main!!.humidity}%"
         cloudy.text = "${getString(R.string.clouds)} ${cityWeatherInfo.clouds!!.all}%"
         moreDetails.visibility = VISIBLE
+        before_image.visibility = INVISIBLE
+
     }
 
     override fun setWeatherIcon(weatherCondition: WeatherConditionEnum) { //TODO find more icon

@@ -9,4 +9,6 @@
     <string name="temp" />
     <string name="title_city_weather_error_message">Something goes wrong</string>
     <string name="text_city_weather_error_message">Check if city\'s name is correct or your internet connection.</string>
+    <string name="no_know_location_permission">The application is not allowed to use the current position.</string>
+    <string name="better_weather">There are my specs, the ones i\'ve been looking for i threw them out my window ten years ago and now they are on my doorstep</string>
 </resources>

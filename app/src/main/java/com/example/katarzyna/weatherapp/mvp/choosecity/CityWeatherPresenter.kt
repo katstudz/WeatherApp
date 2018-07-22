@@ -1,6 +1,7 @@
 package com.example.katarzyna.weatherapp.mvp.choosecity
 
-import com.example.katarzyna.weatherapp.datamodel.WeatherData
+import android.location.Location
+import com.example.katarzyna.weatherapp.datamodel.WeatherResponse
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,10 +18,10 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
     }
 
     override fun getWeatherInfoForCity(cityName: String) {
-       openWeatherMap.getAcctualWeatherForCity(apiKey,cityName)
+       openWeatherMap.getCityWeather(apiKey,cityName)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
-               .subscribe({ response: WeatherData ->
+               .subscribe({ response: WeatherResponse ->
                    setWeather(response)
                    lastCityName = response.cityName!!
                }, { error ->
@@ -28,29 +29,29 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
                })
     }
 
-    private fun setWeather(weatherData: WeatherData){
-        view.setWeatherInfoForCity(weatherData)
-        val weatherCondition = getWeatherCondition(weatherData)
+    private fun setWeather(weatherResponse: WeatherResponse){
+        view.setWeatherInfoForCity(weatherResponse)
+        val weatherCondition = getWeatherCondition(weatherResponse)
         view.setWeatherIcon(weatherCondition)
     }
 
-    private fun getWeatherCondition(weatherData: WeatherData): WeatherConditionEnum
+    private fun getWeatherCondition(weatherResponse: WeatherResponse): WeatherConditionEnum
     {
-        if (weatherData.main!!.temp < 0)
+        if (weatherResponse.main!!.temp < 0)
             return WeatherConditionEnum.COLD
-        else if (weatherData.main!!.humidity > 60)
+        else if (weatherResponse.main!!.humidity > 60)
             return WeatherConditionEnum.WET
-        else if (weatherData.clouds!!.all > 70)
+        else if (weatherResponse.clouds!!.all > 70)
             return WeatherConditionEnum.CLOUDLY
         else
             return WeatherConditionEnum.SUNNY
     }
 
     override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
-        openWeatherMap.getAcctualWeatherForCity(apiKey, cityName)
+        openWeatherMap.getCityWeather(apiKey, cityName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response: WeatherData ->
+                .subscribe({ response: WeatherResponse ->
                     view.setCityAsFavourite(cityName)
                 }, { error ->
                     view.showErrorAlert() //TODO two other error message?
@@ -61,8 +62,19 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
         return lastCityName
     }
 
-
-
+    override fun getWeatherForAcctualPosition(location : Location) {
+        openWeatherMap.getLocationWeather(apiKey,location.latitude, location.latitude)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response: WeatherResponse ->
+                    setWeather(response)
+                    lastCityName = response.cityName!!
+                    view.setCityAsFavourite(response.cityName!!)
+                    println(response.main)
+                }, { error ->
+                    view.showErrorAlert()
+                })
+    }
 
 
 }
