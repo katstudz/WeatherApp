@@ -11,10 +11,13 @@
         android:id="@+id/weatherIcon"
         android:layout_width="192dp"
         android:layout_height="149dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="154dp"
+        android:layout_marginTop="156dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
         <!--app:srcCompat="@drawable/ic_favorite_black_24dp" />-->
 
     <TextView
@@ -29,7 +32,7 @@
         app:layout_constraintTop_toTopOf="@+id/weatherIcon" />
 
     <TextView
-        android:id="@+id/cloudy"
+        android:id="@+id/humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -39,14 +42,14 @@
         app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
     <TextView
-        android:id="@+id/humidity"
+        android:id="@+id/cloudly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:text=""
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
-        app:layout_constraintTop_toBottomOf="@+id/cloudy" />
+        app:layout_constraintTop_toBottomOf="@+id/humidity" />
 
     <TextView
         android:id="@+id/moreDetails"
@@ -110,6 +113,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="80dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

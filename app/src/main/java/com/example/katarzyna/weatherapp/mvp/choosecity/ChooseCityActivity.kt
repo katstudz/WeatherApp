@@ -20,7 +20,6 @@ import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivit
 import com.example.katarzyna.weatherapp.utils.Common
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.basic_weather_info.*
 
 
@@ -33,14 +32,28 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.basic_weather_info)
-        cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
-        cityWeatherPresenter.attachView(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setContentView(R.layout.choose_city_activity)
+//        cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
+//        cityWeatherPresenter.attachView(this)
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 
-        setFavouritePlaceWeather()
-        setButtons()
+//        setFavouritePlaceWeather()
+//        setButtons()
+//
+//
+//        AerisEngine.initWithKeys(this.getString(R.string.aeris_client_id), this.getString(R.string.aeris_client_secret), this)
+//        val place = PlaceParameter("seattle,wa")
+//        val task = ObservationsTask(this,object:  ObservationsTaskCallback{
+//            override fun onObservationsLoaded(observationResponse: MutableList<ObservationResponse>?) {
+//                println(observationResponse!![0].observation.tempC)
+//            }
+//
+//            override fun onObservationsFailed(aerisError: AerisError?) {
+//                println(aerisError!!.description)
+//            }
+//        })
+
     }
 
     private fun setFavouritePlaceWeather() {
@@ -75,15 +88,13 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
             startActivity(weatherDetailsIntent)
         }
     }
-    fun setAcctualPosition(){ //TODO get location
+    fun setAcctualPosition(){
         try {
             fusedLocationClient.lastLocation
                     .addOnSuccessListener { location : Location? ->
                         println(location!!.latitude)
                         cityWeatherPresenter.getWeatherForAcctualPosition(location!!)
                     }
-            println("XXXXXXXx")
-
         }
         catch (e:SecurityException){
             val builder = AlertDialog.Builder(this)
@@ -104,11 +115,10 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         editor.apply()
     }
 
-
-    override fun setWeatherInfoForCity(cityWeatherInfo: WeatherResponse) {
-        temperature.text = "${cityWeatherInfo.main!!.temp.toString()} K"
-        humidity.text = "${getString(R.string.humidity)} ${cityWeatherInfo.main!!.humidity}%"
-        cloudy.text = "${getString(R.string.clouds)} ${cityWeatherInfo.clouds!!.all}%"
+    override fun setWeatherInfoForCity(weatherResponse: WeatherResponse) {
+        temperature.text = "${weatherResponse.main!!.temp} K"
+        humidity.text = "${getString(R.string.humidity)} ${weatherResponse.main!!.humidity}%"
+        humidity.text = "${getString(R.string.clouds)} ${weatherResponse.clouds!!.all}%"
         moreDetails.visibility = VISIBLE
         before_image.visibility = INVISIBLE
 

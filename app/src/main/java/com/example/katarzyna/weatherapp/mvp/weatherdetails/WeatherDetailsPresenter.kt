@@ -15,9 +15,14 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
 
     private lateinit var view: WeatherDetailsContract.View
     private var openWeatherMap = ApiClient.create()
+    private lateinit var todayForecast:ArrayList<BarEntry>
+    private lateinit var tomorrowForecast: ArrayList<BarEntry>
+    private val TWO_DAYS = 4L
+    private val TODAY= 8
+    private val TOMORROW = 16
 
     override fun getForecast(cityName: String) {
-        openWeatherMap.getForecast(apiKey, cityName, 8L)
+        openWeatherMap.getForecast(apiKey, cityName, TWO_DAYS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: ForecastResponse ->
@@ -28,9 +33,11 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
     }
 
     private fun setData(response: ForecastResponse){
+        println("XOXOXODODODODO")
         val chartEntries = forecastDataToChartEntries(response)
         view.drawChart()
         view.drawChart(chartEntries)
+        println("XOXOX")
     }
 
     private fun forecastDataToChartEntries(forecastResponse: ForecastResponse): ArrayList<BarEntry>{
@@ -40,6 +47,9 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
             val hour = getHourFromStringDate(forecastHour.dateString!!)
             chartEntries.add(BarEntry(hour.toFloat(), forecastHour.main!!.temp.toFloat()))
         }
+//        todayForecast = chartEntries.subList(0, TODAY) as ArrayList<BarEntry>
+//        tomorrowForecast = chartEntries.subList(TODAY, TOMORROW) as ArrayList<BarEntry>
+
         return chartEntries
     }
 

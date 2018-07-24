@@ -9,6 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+//TODO change server
+// Access ID
+//ePuXiCXumO1LDJMVBPraZ
+//
+//Secret Key
+//rEvvdmJjWXCJwcWdrm9WV2KDR5vNtXsQhSov1NOe
+
 
 interface ApiClient {
 

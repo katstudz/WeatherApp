@@ -17,13 +17,12 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
         this.view = view
     }
 
-    override fun getWeatherInfoForCity(cityName: String) {
+    override fun getWeatherInfoForCity(cityName: String) { //TODO function to lambda
        openWeatherMap.getCityWeather(apiKey,cityName)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ response: WeatherResponse ->
                    setWeather(response)
-                   lastCityName = response.cityName!!
                }, { error ->
                    view.showErrorAlert()
                })
@@ -33,6 +32,7 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
         view.setWeatherInfoForCity(weatherResponse)
         val weatherCondition = getWeatherCondition(weatherResponse)
         view.setWeatherIcon(weatherCondition)
+        lastCityName = weatherResponse.cityName!!
     }
 
     private fun getWeatherCondition(weatherResponse: WeatherResponse): WeatherConditionEnum
@@ -63,13 +63,12 @@ class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Pre
     }
 
     override fun getWeatherForAcctualPosition(location : Location) {
-        openWeatherMap.getLocationWeather(apiKey,location.latitude, location.latitude)
+        openWeatherMap.getLocationWeather(apiKey,location.latitude, location.longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->
                     setWeather(response)
-                    lastCityName = response.cityName!!
-                    view.setCityAsFavourite(response.cityName!!)
+                    view.setAcctualLocationCityName(response.cityName!!)
                     println(response.main)
                 }, { error ->
                     view.showErrorAlert()
