@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,23 +10,24 @@
         android:layout_width="183dp"
         android:layout_height="191dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="128dp"
+        android:visibility="invisible"
         android:contentDescription="@string/weather_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_cloud_24dp" />
+        app:srcCompat="@drawable/ic_cloud_100dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="128dp"
-        android:text="321.22 K"
+        android:text=""
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.12"
@@ -41,11 +41,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:text="humidity: 30%"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
     <TextView
         android:id="@+id/cloudly"
@@ -54,7 +54,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="clouds: 30%"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
@@ -67,6 +67,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="40dp"
         android:text="@string/more_details"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.179"
         app:layout_constraintStart_toEndOf="@+id/weatherIcon"
@@ -77,32 +78,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/default_city"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintEnd_toStartOf="@+id/findCityWeather"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcon" />
 
     <ImageButton
         android:id="@+id/findCityWeather"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="44dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/find_city_desctiprion"
+        app:layout_constraintEnd_toStartOf="@+id/setCityAsFavourite"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cityNameEditText"
         app:layout_constraintTop_toBottomOf="@+id/moreDetails"
         app:srcCompat="@drawable/ic_search_24dp" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="56dp"
+        android:id="@+id/setCityAsFavourite"
+        android:layout_width="44dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/set_city_favourite_desctiprion"
+        app:layout_constraintEnd_toStartOf="@+id/acctual_position"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/findCityWeather"
         app:layout_constraintTop_toBottomOf="@+id/moreDetails"
         app:srcCompat="@drawable/ic_favorite_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/acctual_position"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/setCityAsFavourite"
+        app:layout_constraintTop_toBottomOf="@+id/moreDetails"
+        app:srcCompat="@drawable/ic_my_location__24dp" />
+
+    <ImageView
+        android:id="@+id/before_image"
+        android:layout_width="334dp"
+        android:layout_height="218dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/cityNameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_cloud_100dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -20,7 +20,8 @@ import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivit
 import com.example.katarzyna.weatherapp.utils.Common
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import com.google.android.gms.location.FusedLocationProviderClient
-import kotlinx.android.synthetic.main.basic_weather_info.*
+import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.choose_city_activity.*
 
 
 class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
@@ -33,26 +34,11 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choose_city_activity)
-//        cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
-//        cityWeatherPresenter.attachView(this)
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-
-//        setFavouritePlaceWeather()
-//        setButtons()
-//
-//
-//        AerisEngine.initWithKeys(this.getString(R.string.aeris_client_id), this.getString(R.string.aeris_client_secret), this)
-//        val place = PlaceParameter("seattle,wa")
-//        val task = ObservationsTask(this,object:  ObservationsTaskCallback{
-//            override fun onObservationsLoaded(observationResponse: MutableList<ObservationResponse>?) {
-//                println(observationResponse!![0].observation.tempC)
-//            }
-//
-//            override fun onObservationsFailed(aerisError: AerisError?) {
-//                println(aerisError!!.description)
-//            }
-//        })
+        cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
+        cityWeatherPresenter.attachView(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setFavouritePlaceWeather()
+        setButtons()
 
     }
 
@@ -118,20 +104,19 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     override fun setWeatherInfoForCity(weatherResponse: WeatherResponse) {
         temperature.text = "${weatherResponse.main!!.temp} K"
         humidity.text = "${getString(R.string.humidity)} ${weatherResponse.main!!.humidity}%"
-        humidity.text = "${getString(R.string.clouds)} ${weatherResponse.clouds!!.all}%"
+        cloudly.text = "${getString(R.string.clouds)} ${weatherResponse.clouds!!.all}%"
         moreDetails.visibility = VISIBLE
+        weatherIcon.visibility = VISIBLE
         before_image.visibility = INVISIBLE
 
     }
 
     override fun setWeatherIcon(weatherCondition: WeatherConditionEnum) { //TODO find more icon
-        var icon:Drawable
+        var icon:Drawable = ContextCompat.getDrawable(this, R.drawable.ic_search_24dp)!!
         when (weatherCondition){
             WeatherConditionEnum.SUNNY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_wb_sunny_black)!!
-            WeatherConditionEnum.CLOUDLY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_24dp)!!
-            else -> {
-                icon = ContextCompat.getDrawable(this, R.drawable.ic_search_24dp)!!
-            }
+            WeatherConditionEnum.CLOUDLY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_100dp)!!
+
         }
         weatherIcon.setImageDrawable(icon)
     }

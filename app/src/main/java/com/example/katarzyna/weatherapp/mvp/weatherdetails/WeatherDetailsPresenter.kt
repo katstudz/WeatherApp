@@ -18,8 +18,7 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
     private lateinit var todayForecast:ArrayList<BarEntry>
     private lateinit var tomorrowForecast: ArrayList<BarEntry>
     private val TWO_DAYS = 4L
-    private val TODAY= 8
-    private val TOMORROW = 16
+
 
     override fun getForecast(cityName: String) {
         openWeatherMap.getForecast(apiKey, cityName, TWO_DAYS)
@@ -47,9 +46,6 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
             val hour = getHourFromStringDate(forecastHour.dateString!!)
             chartEntries.add(BarEntry(hour.toFloat(), forecastHour.main!!.temp.toFloat()))
         }
-//        todayForecast = chartEntries.subList(0, TODAY) as ArrayList<BarEntry>
-//        tomorrowForecast = chartEntries.subList(TODAY, TOMORROW) as ArrayList<BarEntry>
-
         return chartEntries
     }
 
