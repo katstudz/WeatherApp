@@ -10,7 +10,6 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Suppress("DEPRECATION")
 class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContract.Presenter{
 
     private lateinit var view: WeatherDetailsContract.View
@@ -41,20 +40,17 @@ class WeatherDetailsPresenter(private val apiKey: String) :WeatherDetailsContrac
 
     private fun forecastDataToChartEntries(forecastResponse: ForecastResponse): ArrayList<BarEntry>{
         val chartEntries = ArrayList<BarEntry>()
+        var i = 0
         for(forecastHour: Forecast in forecastResponse.forecastList){
 
-            val hour = getHourFromStringDate(forecastHour.dateString!!)
+            val hour = 1 //getHourFromStringDate(forecastHour.dateString!!)
+            i = i +1
             chartEntries.add(BarEntry(hour.toFloat(), forecastHour.main!!.temp.toFloat()))
         }
         return chartEntries
     }
 
-    private fun getHourFromStringDate(date: String): Int {
-        val cal = Calendar.getInstance()
-        val sdf = SimpleDateFormat("YYYY-MM-dd HH:mm:ss", Locale.ENGLISH)
-        cal.time = sdf.parse(date)
-        return cal.time.hours
-    }
+
 
     override fun attachView(view: WeatherDetailsContract.View) {
         this.view = view

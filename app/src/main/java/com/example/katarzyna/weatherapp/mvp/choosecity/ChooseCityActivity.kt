@@ -48,27 +48,27 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
 
         if(cityName!= NONE){
             cityWeatherPresenter.getWeatherInfoForCity(cityName)
-            cityNameEditText.setText(cityName, TextView.BufferType.EDITABLE)
+            city_name_edit_text.setText(cityName, TextView.BufferType.EDITABLE)
         }
 
     }
 
     private fun setButtons(){
-        findCityWeather.setOnClickListener {
+        find_city_weather.setOnClickListener {
             hideKeyboard(this)
-            cityWeatherPresenter.getWeatherInfoForCity(cityNameEditText.text.toString())
+            cityWeatherPresenter.getWeatherInfoForCity(city_name_edit_text.text.toString())
         }
 
 
-        setCityAsFavourite.setOnClickListener {
-            cityWeatherPresenter.checkCityNameCorrectSetAsFavourite(cityNameEditText.text.toString())
+        set_city_as_favourite.setOnClickListener {
+            cityWeatherPresenter.checkCityNameCorrectSetAsFavourite(city_name_edit_text.text.toString())
         }
 
         acctual_position.setOnClickListener {
             setAcctualPosition()
         }
 
-        moreDetails.setOnClickListener {
+        more_details.setOnClickListener {
             val weatherDetailsIntent = Intent(this, WeatherDetailsActivity::class.java)
             weatherDetailsIntent.putExtra(Common.CITY_NAME, cityWeatherPresenter.getLastCityName())
             startActivity(weatherDetailsIntent)
@@ -91,7 +91,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     }
 
     override fun setAcctualLocationCityName(cityName: String) {
-        cityNameEditText.setText(cityName, TextView.BufferType.EDITABLE)
+        city_name_edit_text.setText(cityName, TextView.BufferType.EDITABLE)
     }
 
     override fun setCityAsFavourite(cityName: String) {
@@ -105,7 +105,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         temperature.text = "${weatherResponse.main!!.temp} K"
         humidity.text = "${getString(R.string.humidity)} ${weatherResponse.main!!.humidity}%"
         cloudly.text = "${getString(R.string.clouds)} ${weatherResponse.clouds!!.all}%"
-        moreDetails.visibility = VISIBLE
+        more_details.visibility = VISIBLE
         weatherIcon.visibility = VISIBLE
         before_image.visibility = INVISIBLE
 
