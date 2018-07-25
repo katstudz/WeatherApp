@@ -1,50 +1,26 @@
 package com.example.katarzyna.weatherapp.datamodel
 
 
-data class AerisObservation(
+data class PastObservation(
     val success: Boolean,
-    val error: Error,
-    val response: Response
+    val error: Any,
+    val response: PastObservationResponse
 )
 
-data class Error(
-        val code: String,
-        val description: String
+data class PastObservationResponse(
+        val id: String,
+        val loc: Loc,
+        val place: Place,
+        val periods: List<PastObservationPeriods>,
+        val profile: Profile
 )
 
-data class Response(
-    val id: String,
-    val loc: LongLat,
-    val place: Place,
-    val profile: Profile,
-    val obTimestamp: Int,
-    val obDateTime: String,
-    val ob: Ob,
-    val raw: String,
-    val relativeTo: RelativeTo
+data class PastObservationPeriods(
+    val ob: PastOb,
+    val raw: String
 )
 
-data class LongLat(
-    val long: Double,
-    val lat: Double
-)
-
-data class RelativeTo(
-    val lat: Double,
-    val long: Double,
-    val bearing: Int,
-    val bearingENG: String,
-    val distanceKM: Double,
-    val distanceMI: Double
-)
-
-data class Profile(
-    val tz: String,
-    val elevM: Int,
-    val elevFT: Int
-)
-
-data class Ob(
+data class PastOb(
     val timestamp: Int,
     val dateTimeISO: String,
     val tempC: Int,
@@ -52,11 +28,11 @@ data class Ob(
     val dewpointC: Int,
     val dewpointF: Int,
     val humidity: Int,
-    val pressureMB: Int,
+    val pressureMB: Double,
     val pressureIN: Double,
-    val spressureMB: Int,
+    val spressureMB: Double,
     val spressureIN: Double,
-    val altimeterMB: Int,
+    val altimeterMB: Double,
     val altimeterIN: Double,
     val windKTS: Int,
     val windKPH: Int,
@@ -71,7 +47,7 @@ data class Ob(
     val windGustMPH: Any,
     val flightRule: String,
     val visibilityKM: Double,
-    val visibilityMI: Int,
+    val visibilityMI: Double,
     val weather: String,
     val weatherShort: String,
     val weatherCoded: String,
@@ -103,15 +79,3 @@ data class Ob(
     val QCcode: Int,
     val sky: Int
 )
-
-data class Place(
-    val name: String,
-    val state: String,
-    val country: String
-){
-    fun getString():String{
-        val firstCityName = name.split("/")[0]
-        return "$firstCityName,$country"
-    }
-
-}

@@ -28,7 +28,7 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
                        setWeather(response.response)
                    else
                        view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
-               }, { error ->
+               }, { error -> //todo handle more error
                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
                })
     }
@@ -52,24 +52,42 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
             return WeatherConditionEnum.SUNNY
     }
 
-    override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
-        openWeatherMap.getCityWeather(clientSecret, cityName)
+
+    override fun checkCityNameCorrectSetAsFavourite(cityName: String) { //todo remove to lambda
+        openWeatherMap.getAcctualObservations(cityName, clientId , clientSecret)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response: WeatherResponse -> //TODO
-                    view.setCityAsFavourite(cityName)
+                .subscribe({ aerisObservation: AerisObservation ->
+                    if (aerisObservation.success)
+                        view.setCityAsFavourite(aerisObservation.response.place.toString())
+                    else
+                        view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
                 }, { error ->
-                    view.showErrorAlert(EnumError.INTERNET_CONNECTION) //TODO two other error message?
+                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
                 })
     }
 
     override fun getLastCityName(): String {
-        return lastPlace.name + "," + lastPlace.country
+        return lastPlace.getString()
     }
 
     override fun getWeatherForAcctualPosition(location : Location) {
-        val locationString = location.latitude.toString() + "," + location.latitude.toString()
-        getAcctualObservation(locationString)
+
+        val locationString = "${location.latitude.toString().format(2)}," +
+                location.longitude.toString().format(2)
+        openWeatherMap.getAcctualObservations(locationString, clientId , clientSecret)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ aerisobservation: AerisObservation ->
+                    if (aerisobservation.success){
+                        setWeather(aerisobservation.response)
+                        view.setAcctualLocationCityName(aerisobservation.response.place.getString())
+                    }
+                    else
+                        view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
+                }, { error -> //todo handle more error
+                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
+                })
     }
 
 

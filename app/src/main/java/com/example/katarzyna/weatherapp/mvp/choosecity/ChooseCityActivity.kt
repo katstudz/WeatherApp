@@ -40,9 +40,8 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         cityWeatherPresenter.attachView(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        cityWeatherPresenter.getAcctualObservation("Gdynia,pl")
 //        setFavouritePlaceWeather()
-//        setButtons()
+        setButtons()
 
     }
 
@@ -136,8 +135,8 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
 
     fun getErrorTextFromEnumError(enumError: EnumError): Int{
         when(enumError){
-            EnumError.INTERNET_CONNECTION-> R.string.check_internet_connection
-            EnumError.LOCATION_NOT_FOUND-> R.string.no_location
+            EnumError.INTERNET_CONNECTION-> return R.string.check_internet_connection
+            EnumError.LOCATION_NOT_FOUND-> return R.string.no_location
         }
         return R.string.text_city_weather_error_message
     }

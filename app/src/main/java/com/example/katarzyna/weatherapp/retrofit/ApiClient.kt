@@ -1,18 +1,12 @@
 package com.example.katarzyna.weatherapp.retrofit
 
-import com.aerisweather.aeris.model.AerisResponse
-import com.example.katarzyna.weatherapp.datamodel.AerisObservation
-import com.example.katarzyna.weatherapp.datamodel.ForecastResponse
-import com.example.katarzyna.weatherapp.datamodel.WeatherResponse
+import com.example.katarzyna.weatherapp.datamodel.*
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 //TODO change server
 // Access ID
@@ -25,13 +19,19 @@ import retrofit2.http.Query
 interface ApiClient {
 
     @GET("observations/{city}")
-    fun getAcctualObservations(@Path("city") city: String, @Query("client_id") clientId: String, @Query("client_secret") clientSecret: String): Observable<AerisObservation>
+    fun getAcctualObservations(@Path("city") city: String, @Query("client_id") clientId: String,
+                               @Query("client_secret") clientSecret: String): Observable<AerisObservation>
 
     @GET("observations/archive/{p}")
-    fun getPastObservations(@Path("p") city: String, @Query("client_id") clientId: String, @Query("client_secret") clientSecret: String): Observable<AerisResponse>
+    fun getPastObservations(@Path("p") city: String, @Query("from")from: String,
+                            @Query("plimit")plimit: Int, @Query("client_id") clientId: String,
+                            @Query("client_secret") clientSecret: String): Observable<PastObservation>
 
     @GET("forecasts/{p}")
-    fun getForecastObservations(@Path("p") city: String, @Query("from") from: String, @Query("client_id") clientId: String, @Query("client_secret") clientSecret: String): Observable<AerisResponse>
+    fun getForecastObservations(@Path("p") city: String, @Query("filter" ) interval:String,
+                                @Query("from") from: String, @Query("limit") limit: Int,
+                                @Query("client_id") clientId: String,
+                                @Query("client_secret") clientSecret: String): Observable<ForecastResponse>
 
 
 
@@ -48,7 +48,7 @@ interface ApiClient {
     @GET("forecast")
     fun getForecast(@Query("apikey")  apiKey:String,
                     @Query("q") city: String,
-                    @Query("cnt") count: Long = 0): Observable<ForecastResponse>
+                    @Query("cnt") count: Long = 0): Observable<ForecastResponse22>
 
 
     companion object Factory {

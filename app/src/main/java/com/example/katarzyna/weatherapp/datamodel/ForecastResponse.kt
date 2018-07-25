@@ -1,52 +1,109 @@
 package com.example.katarzyna.weatherapp.datamodel
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import java.util.concurrent.TimeUnit
 
-data class ForecastResponse(@Expose @SerializedName("city") var city: City?,
-                            @Expose @SerializedName("cnt") var cnt: Long?,
-                            @Expose @SerializedName("list") var forecastList: List<Forecast> = ArrayList())
+data class ForecastResponse(
+    val success: Boolean,
+    val error: Any,
+    val response: List<FrResponse>
+)
 
+data class FrResponse(
+    val loc: Loc,
+    val interval: String,
+    val periods: List<Period>,
+    val profile: Profile
+)
 
-
-data class Forecast(@Expose @SerializedName("dt") var dt: Long?,
-                    @Expose @SerializedName("main") var main: Main?,
-                    @Expose @SerializedName("weather") var weatherList: List<Weather> = ArrayList(),
-                    @Expose @SerializedName("clouds") var clouds: Clouds?,
-                    @Expose @SerializedName("wind") var wind: Wind?,
-                    @Expose @SerializedName("rain") var rain: Rain?,
-                    @Expose @SerializedName("snow") var snow: Snow?,
-                    @Expose @SerializedName("dt_txt") var dateString: String?) {
-
-    fun dtStartMillis(): Long = dt!!.times(1000)
-    fun dtStopMillis(): Long = dt!!.times(1000) + (MILLIS_3H)
-    fun range3h(): LongRange = dtStartMillis()..(dtStopMillis())
-
-    companion object {
-        private val MILLIS_3H = TimeUnit.HOURS.toMillis(3)
-    }
-}
-
-data class City(@Expose @SerializedName("id") var id: Long?,
-                @Expose @SerializedName("name") var name: String?,
-                @Expose @SerializedName("coord") var coord: Coord?,
-                @Expose @SerializedName("country") var country: String?)
-
-data class Coord(@Expose @SerializedName("lon") var longitude: Double?,
-                 @Expose @SerializedName("lat") var latitude: Double?)
+data class Loc(
+    val long: Double,
+    val lat: Double
+)
 
 
-data class Wind(@Expose @SerializedName("speed") var speed: Double?,
-                @Expose @SerializedName("deg") var deg: Double?)
-
-data class Snow(@Expose @SerializedName("3h") var volume: Double?)
-
-data class Rain(@Expose @SerializedName("3h") var precipitation: Double?)
-
-
-data class Weather(@Expose @SerializedName("id") var id: Long?,
-                   @Expose @SerializedName("main") var main: String?,
-                   @Expose @SerializedName("description") var description: String?,
-                   @Expose @SerializedName("icon") var icon: String?)
-
+data class Period(
+    val timestamp: Int,
+    val validTime: String,
+    val dateTimeISO: String,
+    val maxTempC: Int,
+    val maxTempF: Int,
+    val minTempC: Int,
+    val minTempF: Int,
+    val avgTempC: Int,
+    val avgTempF: Int,
+    val tempC: Int,
+    val tempF: Int,
+    val pop: Int,
+    val precipMM: Int,
+    val precipIN: Int,
+    val iceaccum: Any,
+    val iceaccumMM: Any,
+    val iceaccumIN: Any,
+    val maxHumidity: Int,
+    val minHumidity: Int,
+    val humidity: Int,
+    val uvi: Int,
+    val pressureMB: Int,
+    val pressureIN: Double,
+    val sky: Int,
+    val snowCM: Int,
+    val snowIN: Int,
+    val feelslikeC: Int,
+    val feelslikeF: Int,
+    val minFeelslikeC: Int,
+    val minFeelslikeF: Int,
+    val maxFeelslikeC: Int,
+    val maxFeelslikeF: Int,
+    val avgFeelslikeC: Int,
+    val avgFeelslikeF: Int,
+    val dewpointC: Int,
+    val dewpointF: Int,
+    val maxDewpointC: Int,
+    val maxDewpointF: Int,
+    val minDewpointC: Int,
+    val minDewpointF: Int,
+    val avgDewpointC: Int,
+    val avgDewpointF: Int,
+    val windDirDEG: Int,
+    val windDir: String,
+    val windDirMaxDEG: Int,
+    val windDirMax: String,
+    val windDirMinDEG: Int,
+    val windDirMin: String,
+    val windGustKTS: Int,
+    val windGustKPH: Int,
+    val windGustMPH: Int,
+    val windSpeedKTS: Int,
+    val windSpeedKPH: Int,
+    val windSpeedMPH: Int,
+    val windSpeedMaxKTS: Int,
+    val windSpeedMaxKPH: Int,
+    val windSpeedMaxMPH: Int,
+    val windSpeedMinKTS: Int,
+    val windSpeedMinKPH: Int,
+    val windSpeedMinMPH: Int,
+    val windDir80mDEG: Int,
+    val windDir80m: String,
+    val windDirMax80mDEG: Int,
+    val windDirMax80m: String,
+    val windDirMin80mDEG: Int,
+    val windDirMin80m: String,
+    val windGust80mKTS: Int,
+    val windGust80mKPH: Int,
+    val windGust80mMPH: Int,
+    val windSpeed80mKTS: Int,
+    val windSpeed80mKPH: Int,
+    val windSpeed80mMPH: Int,
+    val windSpeedMax80mKTS: Int,
+    val windSpeedMax80mKPH: Int,
+    val windSpeedMax80mMPH: Int,
+    val windSpeedMin80mKTS: Int,
+    val windSpeedMin80mKPH: Int,
+    val windSpeedMin80mMPH: Int,
+    val weather: String,
+    val weatherCoded: List<Any>,
+    val weatherPrimary: String,
+    val weatherPrimaryCoded: String,
+    val cloudsCoded: String,
+    val icon: String,
+    val isDay: Boolean
+)

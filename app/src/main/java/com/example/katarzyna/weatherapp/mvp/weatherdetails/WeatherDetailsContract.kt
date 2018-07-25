@@ -7,11 +7,12 @@ import java.util.ArrayList
 
 class WeatherDetailsContract {
     interface Presenter: BaseContract.BasePresenter<View>{
-        fun getForecast(cityName: String)
+        fun downloadData(cityName: String)
+        fun setForecastData()
+        fun setPastData()
     }
 
     interface View: BaseContract.BaseView {
         fun drawChart(chartEntries: ArrayList<BarEntry>)
-        fun drawChart()
     }
 }
