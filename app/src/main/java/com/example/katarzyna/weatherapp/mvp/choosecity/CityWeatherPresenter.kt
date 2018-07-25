@@ -28,7 +28,7 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ response: AerisObservation ->
                         setWeather(response.response)
-                    }, { error -> //todo handle more error
+                    }, { error ->
                         view.showErrorAlert(EnumError.OTHER)
                     })
         }

@@ -28,29 +28,11 @@ interface ApiClient {
 
 
 
-    @GET("weather")
-    fun getCityWeather(@Query("apikey")  apiKey:String,
-                       @Query("q") city: String): Observable<WeatherResponse>
-
-    @GET("weather")
-    fun getLocationWeather(@Query("apikey")  apiKey:String,
-                           @Query("lat") latitude: Double,
-                           @Query("lon") longitude: Double): Observable<WeatherResponse>
-
-
-    @GET("forecast")
-    fun getForecast(@Query("apikey")  apiKey:String,
-                    @Query("q") city: String,
-                    @Query("cnt") count: Long = 0): Observable<ForecastResponse22>
-
-
     companion object Factory {
 
         var API_BASE_URL = "http://api.aerisapi.com/"
 
         private fun createClient(): OkHttpClient {
-//            setLogLevel(RestAdapter.LogLevel.FULL)
-
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
