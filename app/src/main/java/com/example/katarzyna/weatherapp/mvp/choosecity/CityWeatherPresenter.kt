@@ -59,7 +59,7 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ aerisObservation: AerisObservation ->
                     if (aerisObservation.success)
-                        view.setCityAsFavourite(aerisObservation.response.place.toString())
+                        view.setCityAsFavourite(aerisObservation.response.place.getString())
                     else
                         view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
                 }, { error ->

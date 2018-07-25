@@ -5,20 +5,28 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
 import com.example.katarzyna.weatherapp.R
+import com.example.katarzyna.weatherapp.mvp.BasicActivity
+import com.example.katarzyna.weatherapp.utils.Common
 import com.github.mikephil.charting.data.*
 import kotlinx.android.synthetic.main.weather_details_activity.*
 
 
-class WeatherDetailsActivity: AppCompatActivity(), WeatherDetailsContract.View {
+class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
 
     lateinit var weatherDetailsPresenter: WeatherDetailsPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.weather_details_activity)
+        chart.setNoDataText("")
+
+
         weatherDetailsPresenter = WeatherDetailsPresenter(this.getString(R.string.aeris_client_id), this.getString(R.string.aeris_client_secret))
         weatherDetailsPresenter.attachView(this)
-        weatherDetailsPresenter.downloadData("Gdynia,pl")
 
+        val cityName = intent.getStringExtra(Common.CITY_NAME)
+        weatherDetailsPresenter.downloadData(cityName)
+        city_name.text = cityName
         setButtons()
     }
 
@@ -41,7 +49,7 @@ class WeatherDetailsActivity: AppCompatActivity(), WeatherDetailsContract.View {
     }
 
     override fun drawChart(chartEntries: ArrayList<BarEntry>) {
-        this.runOnUiThread( {
+
             val dataSet = BarDataSet(chartEntries, "")
             dataSet.setDrawValues(false)
             dataSet.color = resources.getColor(R.color.colorPrimary)
@@ -51,13 +59,10 @@ class WeatherDetailsActivity: AppCompatActivity(), WeatherDetailsContract.View {
             chart.data = tempData
             chart.description.isEnabled = false
             chart.setDrawGridBackground(false)
-            chart.setDrawValueAboveBar(false)
 
             chart.axisLeft.setDrawGridLines(false)
             chart.xAxis.setDrawGridLines(false)
 
-            chart.axisLeft.mAxisMinimum = 265F
-            chart.axisLeft.mAxisMinimum = 320F
             chart.axisRight.setDrawLabels(false)
             chart.xAxis.setDrawLabels(false)
 
@@ -65,7 +70,6 @@ class WeatherDetailsActivity: AppCompatActivity(), WeatherDetailsContract.View {
             chart.notifyDataSetChanged()
             chart.invalidate()
 
-        })
     }
 
 }

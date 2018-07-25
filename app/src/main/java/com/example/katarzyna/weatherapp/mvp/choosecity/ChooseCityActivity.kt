@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -16,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.example.katarzyna.weatherapp.R
 import com.example.katarzyna.weatherapp.datamodel.Ob
+import com.example.katarzyna.weatherapp.mvp.BasicActivity
 import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivity
 import com.example.katarzyna.weatherapp.utils.CloudType
 import com.example.katarzyna.weatherapp.utils.Common
@@ -26,7 +25,7 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.choose_city_activity.*
 
 
-class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
+class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var cityWeatherPresenter: CityWeatherPresenter
@@ -40,7 +39,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         cityWeatherPresenter.attachView(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-//        setFavouritePlaceWeather()
+        setFavouritePlaceWeather()
         setButtons()
 
     }
@@ -86,10 +85,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
                     }
         }
         catch (e:SecurityException){
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage(R.string.no_know_location_permission)
-            val dialog = builder.create()
-            dialog.show()
+            showErrorAlert(EnumError.NO_LOCATION_PERMISSION)
         }
     }
 
@@ -117,28 +113,13 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     override fun setWeatherIcon(weatherCondition: WeatherConditionEnum) { //TODO find more icon
         var icon:Drawable = ContextCompat.getDrawable(this, R.drawable.ic_search_24dp)!!
         when (weatherCondition){
-            WeatherConditionEnum.SUNNY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_wb_sunny_black)!!
+            WeatherConditionEnum.COLD-> icon = ContextCompat.getDrawable(this, R.drawable.ic_cold_100dp)!!
+            WeatherConditionEnum.WET-> icon = ContextCompat.getDrawable(this, R.drawable.ic_rain_100dp)!!
+            WeatherConditionEnum.SUNNY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_wb_sunny_100dp)!!
             WeatherConditionEnum.CLOUDLY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_100dp)!!
 
         }
         weather_icon.setImageDrawable(icon)
-    }
-
-
-    override fun showErrorAlert(enumError: EnumError) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(R.string.title_city_weather_error_message)
-        builder.setMessage(getErrorTextFromEnumError(enumError))
-        val dialog = builder.create()
-        dialog.show()
-        }
-
-    fun getErrorTextFromEnumError(enumError: EnumError): Int{
-        when(enumError){
-            EnumError.INTERNET_CONNECTION-> return R.string.check_internet_connection
-            EnumError.LOCATION_NOT_FOUND-> return R.string.no_location
-        }
-        return R.string.text_city_weather_error_message
     }
 
     fun hideKeyboard(activity: Activity) {

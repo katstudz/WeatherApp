@@ -18,7 +18,6 @@ class CityWeatherContract {
     interface View: BaseContract.BaseView {
         fun setWeatherInfoForCity(observation: Ob)
         fun setWeatherIcon(weatherCondition: WeatherConditionEnum)
-        fun showErrorAlert(error: EnumError)
         fun setCityAsFavourite(cityName: String)
         fun setAcctualLocationCityName(cityName: String)
     }

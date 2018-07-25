@@ -2,6 +2,7 @@ package com.example.katarzyna.weatherapp.mvp.weatherdetails
 
 import com.example.katarzyna.weatherapp.datamodel.*
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
+import com.example.katarzyna.weatherapp.utils.EnumError
 import com.github.mikephil.charting.data.BarEntry
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -37,7 +38,9 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                     setForecastData(forecastResponse.response.first().periods)
 
                 },
-                        { error -> //todo handle more error
+                        { error ->
+                            println(error.message)
+                            view.showErrorAlert(EnumError.OTHER)
                 })
     }
 

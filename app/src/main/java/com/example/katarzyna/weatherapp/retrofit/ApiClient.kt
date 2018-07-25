@@ -8,13 +8,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-//TODO change server
-// Access ID
-//ePuXiCXumO1LDJMVBPraZ
-//
-//Secret Key
-//rEvvdmJjWXCJwcWdrm9WV2KDR5vNtXsQhSov1NOe
-
 
 interface ApiClient {
 
