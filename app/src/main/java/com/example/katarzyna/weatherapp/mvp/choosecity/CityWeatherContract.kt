@@ -9,7 +9,7 @@ import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 class CityWeatherContract {
 
     interface Presenter: BaseContract.BasePresenter<View>{
-        fun getWeatherInfoForCity(cityName: String)
+        fun getAcctualObservation(cityName: String)
         fun getLastCityName():String
         fun checkCityNameCorrectSetAsFavourite(cityName: String)
         fun getWeatherForAcctualPosition(location : Location)

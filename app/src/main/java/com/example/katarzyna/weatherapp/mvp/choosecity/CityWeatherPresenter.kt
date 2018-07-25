@@ -19,9 +19,8 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
         this.view = view
     }
 
-    override fun getWeatherInfoForCity(cityName: String) { //TODO function to lambda
-       println("XXXX")
-        openWeatherMap.getAcctualObservations("Gdynia", clientId , clientSecret)
+    override fun getAcctualObservation(place: String) {
+        openWeatherMap.getAcctualObservations(place, clientId , clientSecret)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ response: AerisObservation ->
@@ -65,21 +64,14 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
     }
 
     override fun getLastCityName(): String {
-        return lastPlace.name + ","+lastPlace.country
+        return lastPlace.name + "," + lastPlace.country
     }
 
     override fun getWeatherForAcctualPosition(location : Location) {
-        openWeatherMap.getLocationWeather(clientSecret,location.latitude, location.longitude)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response: WeatherResponse ->
-//                    setWeather(response)
-//                    view.setAcctualLocationCityName(response.cityName!!)
-                    println(response.main)
-                }, { error ->
-                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
-                })
+        val locationString = location.latitude.toString() + "," + location.latitude.toString()
+        getAcctualObservation(locationString)
     }
+
 
 
 }

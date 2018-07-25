@@ -24,7 +24,6 @@ import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.choose_city_activity.*
-import java.lang.Error
 
 
 class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
@@ -41,7 +40,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         cityWeatherPresenter.attachView(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        cityWeatherPresenter.getWeatherInfoForCity("Gdynia,pl")
+        cityWeatherPresenter.getAcctualObservation("Gdynia,pl")
 //        setFavouritePlaceWeather()
 //        setButtons()
 
@@ -52,7 +51,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         val cityName= myPrefs.getString(FAVOURITE_CITY_KEY, NONE)
 
         if(cityName!= NONE){
-            cityWeatherPresenter.getWeatherInfoForCity(cityName)
+            cityWeatherPresenter.getAcctualObservation(cityName)
             city_name_edit_text.setText(cityName, TextView.BufferType.EDITABLE)
         }
 
@@ -61,7 +60,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     private fun setButtons(){
         find_city_weather.setOnClickListener {
             hideKeyboard(this)
-            cityWeatherPresenter.getWeatherInfoForCity(city_name_edit_text.text.toString())
+            cityWeatherPresenter.getAcctualObservation(city_name_edit_text.text.toString())
         }
 
 
@@ -140,6 +139,7 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
             EnumError.INTERNET_CONNECTION-> R.string.check_internet_connection
             EnumError.LOCATION_NOT_FOUND-> R.string.no_location
         }
+        return R.string.text_city_weather_error_message
     }
 
     fun hideKeyboard(activity: Activity) {

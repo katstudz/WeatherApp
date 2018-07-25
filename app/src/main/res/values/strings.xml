@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+
+    <string name="aeris_client_id">ePuXiCXumO1LDJMVBPraZ</string>
+    <string name="aeris_client_secret">rEvvdmJjWXCJwcWdrm9WV2KDR5vNtXsQhSov1NOe</string>
+
     <string name="humidity">humidity: </string>
     <string name="clouds">clouds: </string>
     <string name="default_city">Las Vegas</string>
@@ -12,8 +16,7 @@
     <string name="no_know_location_permission">The application is not allowed to use the current position.</string>
     <string name="better_weather">There are my specs, the ones i\'ve been looking for i threw them out my window ten years ago and now they are on my doorstep</string>
 
-    <string name="aeris_client_id">ePuXiCXumO1LDJMVBPraZ</string>
-    <string name="aeris_client_secret">rEvvdmJjWXCJwcWdrm9WV2KDR5vNtXsQhSov1NOe</string>
+
     <string name="weather_icon">Weather_icon</string>
     <string name="check_internet_connection">Check internet connection.</string>
     <string name="no_location">The location wasn\'t found.</string>
