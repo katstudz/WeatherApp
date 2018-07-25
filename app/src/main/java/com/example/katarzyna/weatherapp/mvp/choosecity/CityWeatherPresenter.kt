@@ -1,77 +1,83 @@
 package com.example.katarzyna.weatherapp.mvp.choosecity
 
 import android.location.Location
-import com.example.katarzyna.weatherapp.datamodel.WeatherResponse
+import com.example.katarzyna.weatherapp.datamodel.*
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
+import com.example.katarzyna.weatherapp.utils.CloudType
+import com.example.katarzyna.weatherapp.utils.EnumError
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class CityWeatherPresenter(private val apiKey: String) : CityWeatherContract.Presenter {
+class CityWeatherPresenter(private val clientId: String, private val clientSecret: String) : CityWeatherContract.Presenter {
 
     private val openWeatherMap = ApiClient.create()
     private lateinit var view: CityWeatherContract.View
-    private lateinit var lastCityName: String
+    private lateinit var lastPlace: Place
 
     override fun attachView(view: CityWeatherContract.View) {
         this.view = view
     }
 
     override fun getWeatherInfoForCity(cityName: String) { //TODO function to lambda
-       openWeatherMap.getCityWeather(apiKey,cityName)
+       println("XXXX")
+        openWeatherMap.getAcctualObservations("Gdynia", clientId , clientSecret)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
-               .subscribe({ response: WeatherResponse ->
-                   setWeather(response)
+               .subscribe({ response: AerisObservation ->
+                   if (response.success)
+                       setWeather(response.response)
+                   else
+                       view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
                }, { error ->
-                   view.showErrorAlert()
+                   view.showErrorAlert(EnumError.INTERNET_CONNECTION)
                })
     }
 
-    private fun setWeather(weatherResponse: WeatherResponse){
-        view.setWeatherInfoForCity(weatherResponse)
-        val weatherCondition = getWeatherCondition(weatherResponse)
+    private fun setWeather(response: Response){
+        view.setWeatherInfoForCity(response.ob)
+        val weatherCondition = getWeatherCondition(response.ob)
         view.setWeatherIcon(weatherCondition)
-        lastCityName = weatherResponse.cityName!!
+        lastPlace = response.place
     }
 
-    private fun getWeatherCondition(weatherResponse: WeatherResponse): WeatherConditionEnum
+    private fun getWeatherCondition(ob: Ob): WeatherConditionEnum
     {
-        if (weatherResponse.main!!.temp < 0)
+        if (ob.tempC < 5)
             return WeatherConditionEnum.COLD
-        else if (weatherResponse.main!!.humidity > 60)
+        else if (ob.humidity > 60)
             return WeatherConditionEnum.WET
-        else if (weatherResponse.clouds!!.all > 70)
+        else if (CloudType.getCovarageInProcent(ob.cloudsCoded) > 0.7)
             return WeatherConditionEnum.CLOUDLY
         else
             return WeatherConditionEnum.SUNNY
     }
 
     override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
-        openWeatherMap.getCityWeather(apiKey, cityName)
+        openWeatherMap.getCityWeather(clientSecret, cityName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response: WeatherResponse ->
+                .subscribe({ response: WeatherResponse -> //TODO
                     view.setCityAsFavourite(cityName)
                 }, { error ->
-                    view.showErrorAlert() //TODO two other error message?
+                    view.showErrorAlert(EnumError.INTERNET_CONNECTION) //TODO two other error message?
                 })
     }
 
     override fun getLastCityName(): String {
-        return lastCityName
+        return lastPlace.name + ","+lastPlace.country
     }
 
     override fun getWeatherForAcctualPosition(location : Location) {
-        openWeatherMap.getLocationWeather(apiKey,location.latitude, location.longitude)
+        openWeatherMap.getLocationWeather(clientSecret,location.latitude, location.longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->
-                    setWeather(response)
-                    view.setAcctualLocationCityName(response.cityName!!)
+//                    setWeather(response)
+//                    view.setAcctualLocationCityName(response.cityName!!)
                     println(response.main)
                 }, { error ->
-                    view.showErrorAlert()
+                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
                 })
     }
 

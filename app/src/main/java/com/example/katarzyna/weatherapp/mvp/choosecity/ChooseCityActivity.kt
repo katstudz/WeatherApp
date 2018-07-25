@@ -15,13 +15,16 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.example.katarzyna.weatherapp.R
-import com.example.katarzyna.weatherapp.datamodel.WeatherResponse
+import com.example.katarzyna.weatherapp.datamodel.Ob
 import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivity
+import com.example.katarzyna.weatherapp.utils.CloudType
 import com.example.katarzyna.weatherapp.utils.Common
+import com.example.katarzyna.weatherapp.utils.EnumError
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.choose_city_activity.*
+import java.lang.Error
 
 
 class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
@@ -34,11 +37,13 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.choose_city_activity)
-        cityWeatherPresenter = CityWeatherPresenter(Common.API_KEY)
+        cityWeatherPresenter = CityWeatherPresenter(this.getString(R.string.aeris_client_id), this.getString(R.string.aeris_client_secret))
         cityWeatherPresenter.attachView(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        setFavouritePlaceWeather()
-        setButtons()
+
+        cityWeatherPresenter.getWeatherInfoForCity("Gdynia,pl")
+//        setFavouritePlaceWeather()
+//        setButtons()
 
     }
 
@@ -101,12 +106,12 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
         editor.apply()
     }
 
-    override fun setWeatherInfoForCity(weatherResponse: WeatherResponse) {
-        temperature.text = "${weatherResponse.main!!.temp} K"
-        humidity.text = "${getString(R.string.humidity)} ${weatherResponse.main!!.humidity}%"
-        cloudly.text = "${getString(R.string.clouds)} ${weatherResponse.clouds!!.all}%"
+    override fun setWeatherInfoForCity(observation: Ob) {
+        temperature.text = "${observation.tempC} C"
+        humidity.text = "${getString(R.string.humidity)} ${observation.humidity}%"
+        cloudly.text = "${getString(R.string.clouds)} ${CloudType.getCovarageInProcent(observation.cloudsCoded)}%"
         more_details.visibility = VISIBLE
-        weatherIcon.visibility = VISIBLE
+        weather_icon.visibility = VISIBLE
         before_image.visibility = INVISIBLE
 
     }
@@ -118,17 +123,24 @@ class ChooseCityActivity : AppCompatActivity(), CityWeatherContract.View {
             WeatherConditionEnum.CLOUDLY-> icon = ContextCompat.getDrawable(this, R.drawable.ic_cloud_100dp)!!
 
         }
-        weatherIcon.setImageDrawable(icon)
+        weather_icon.setImageDrawable(icon)
     }
 
 
-    override fun showErrorAlert() {
+    override fun showErrorAlert(enumError: EnumError) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.title_city_weather_error_message)
-        builder.setMessage(R.string.text_city_weather_error_message)
+        builder.setMessage(getErrorTextFromEnumError(enumError))
         val dialog = builder.create()
         dialog.show()
         }
+
+    fun getErrorTextFromEnumError(enumError: EnumError): Int{
+        when(enumError){
+            EnumError.INTERNET_CONNECTION-> R.string.check_internet_connection
+            EnumError.LOCATION_NOT_FOUND-> R.string.no_location
+        }
+    }
 
     fun hideKeyboard(activity: Activity) {
         val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

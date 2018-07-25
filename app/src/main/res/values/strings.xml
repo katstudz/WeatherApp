@@ -15,5 +15,7 @@
     <string name="aeris_client_id">ePuXiCXumO1LDJMVBPraZ</string>
     <string name="aeris_client_secret">rEvvdmJjWXCJwcWdrm9WV2KDR5vNtXsQhSov1NOe</string>
     <string name="weather_icon">Weather_icon</string>
+    <string name="check_internet_connection">Check internet connection.</string>
+    <string name="no_location">The location wasn\'t found.</string>
 
 </resources>
