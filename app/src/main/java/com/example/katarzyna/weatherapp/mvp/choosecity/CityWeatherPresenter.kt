@@ -22,14 +22,25 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
     override fun getAcctualObservation(place: String) {
         var reformedPlaceName= place.replace(" ", "+")
 
-        openWeatherMap.getAcctualObservations(reformedPlaceName, clientId , clientSecret)
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe({ response: AerisObservation ->
-                   setWeather(response.response)
-               }, { error -> //todo handle more error
-                   view.showErrorAlert(EnumError.OTHER)
-               })
+        if(checkCityNameCorrect(reformedPlaceName)){
+            openWeatherMap.getAcctualObservations(reformedPlaceName, clientId , clientSecret)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ response: AerisObservation ->
+                        setWeather(response.response)
+                    }, { error -> //todo handle more error
+                        view.showErrorAlert(EnumError.OTHER)
+                    })
+        }
+
+        else view.showErrorAlert(EnumError.NO_CITYNAME_FORMAT)
+    }
+
+    private fun checkCityNameCorrect(cityName: String):Boolean{
+        var splitedCityName = cityName.split(',')
+        if (splitedCityName.size != 2)
+            return false
+        return ((splitedCityName[0].isNotEmpty())and (splitedCityName[1].isNotEmpty()))
     }
 
     private fun setWeather(response: Response){

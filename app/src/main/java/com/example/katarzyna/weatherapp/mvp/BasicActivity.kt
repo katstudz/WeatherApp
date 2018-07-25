@@ -19,9 +19,9 @@ abstract class BasicActivity: AppCompatActivity(), BaseContract.BaseView {
             EnumError.INTERNET_CONNECTION-> return R.string.check_internet_connection
             EnumError.LOCATION_NOT_FOUND-> return R.string.no_location
             EnumError.OTHER-> return R.string.error
-            EnumError.NO_LOCATION_PERMISSION-> R.string.no_know_location_permission
+            EnumError.NO_CITYNAME_FORMAT->return R.string.city_format_error
+            EnumError.NO_LOCATION_PERMISSION->return R.string.no_know_location_permission
         }
-        return R.string.text_city_weather_error_message
     }
 
 }
