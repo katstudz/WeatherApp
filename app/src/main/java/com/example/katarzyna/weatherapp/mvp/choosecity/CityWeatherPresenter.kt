@@ -20,16 +20,15 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
     }
 
     override fun getAcctualObservation(place: String) {
-        openWeatherMap.getAcctualObservations(place, clientId , clientSecret)
+        var reformedPlaceName= place.replace(" ", "+")
+
+        openWeatherMap.getAcctualObservations(reformedPlaceName, clientId , clientSecret)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ response: AerisObservation ->
-                   if (response.success)
-                       setWeather(response.response)
-                   else
-                       view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
+                   setWeather(response.response)
                }, { error -> //todo handle more error
-                   view.showErrorAlert(EnumError.INTERNET_CONNECTION)
+                   view.showErrorAlert(EnumError.OTHER)
                })
     }
 
@@ -53,17 +52,14 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
     }
 
 
-    override fun checkCityNameCorrectSetAsFavourite(cityName: String) { //todo remove to lambda
+    override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
         openWeatherMap.getAcctualObservations(cityName, clientId , clientSecret)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ aerisObservation: AerisObservation ->
-                    if (aerisObservation.success)
-                        view.setCityAsFavourite(aerisObservation.response.place.getString())
-                    else
-                        view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
+                    view.setCityAsFavourite(aerisObservation.response.place.getString())
                 }, { error ->
-                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
+                    view.showErrorAlert(EnumError.OTHER)
                 })
     }
 
@@ -79,14 +75,10 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ aerisobservation: AerisObservation ->
-                    if (aerisobservation.success){
-                        setWeather(aerisobservation.response)
-                        view.setAcctualLocationCityName(aerisobservation.response.place.getString())
-                    }
-                    else
-                        view.showErrorAlert(EnumError.LOCATION_NOT_FOUND)
-                }, { error -> //todo handle more error
-                    view.showErrorAlert(EnumError.INTERNET_CONNECTION)
+                    setWeather(aerisobservation.response)
+                    view.setAcctualLocationCityName(aerisobservation.response.place.getString())
+                }, { error ->
+                    view.showErrorAlert(EnumError.OTHER)
                 })
     }
 
