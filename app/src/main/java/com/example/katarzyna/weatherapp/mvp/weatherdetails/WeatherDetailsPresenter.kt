@@ -17,6 +17,9 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
     private lateinit var forecastBarEntry:ArrayList<BarEntry>
     private lateinit var yesterdayBarEntry: ArrayList<BarEntry>
 
+    private lateinit var forecastPeriods: List<Period>
+    private var yesterdayPeriods: MutableList<PastObservationPeriods> =  arrayListOf()
+
     override fun setForecastData() {
         view.drawChart(forecastBarEntry)
     }
@@ -36,10 +39,8 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ forecastResponse: ForecastResponse ->
                     setForecastData(forecastResponse.response.first().periods)
-
                 },
                         { error ->
-                            println(error.message)
                             view.showErrorAlert(EnumError.OTHER)
                 })
     }
@@ -49,12 +50,11 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({pastObservation: PastObservation? ->
-                    println(pastObservation!!.success)
-                    prepareYesterdayData(pastObservation.response.periods)
+                    prepareYesterdayData(pastObservation!!.response.periods)
                 },
                         {
-                            error -> //todo handle more error
-                            println("OOOOOOOOOOOOOO")
+                            error ->
+                            view.showErrorAlert(EnumError.OTHER)
                         })
     }
 
@@ -63,10 +63,16 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
         val chartEntries = ArrayList<BarEntry>()
         for (period in periods){
             val calendar = getHour(period.ob.dateTimeISO)
-            if(isFullHour(calendar!!))
+            if(isFullHour(calendar!!)){
                 chartEntries.add(BarEntry(calendar!!.time.hours.toFloat(), period.ob.tempC.toFloat()))
+                yesterdayPeriods.add(period)
+            }
         }
         yesterdayBarEntry = chartEntries.subList(0, 24).toList() as ArrayList<BarEntry>
+    }
+
+    private fun getFutureWeatherDescription(){
+
     }
 
     private fun isFullHour(calendar: Calendar):Boolean{
@@ -74,6 +80,7 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
     }
 
     private fun setForecastData(forecastPeriods: List<Period>) {
+        this.forecastPeriods = forecastPeriods
         forecastBarEntry = forecastDataToChartEntries(forecastPeriods)
         setForecastData()
     }

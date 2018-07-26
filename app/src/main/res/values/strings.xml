@@ -24,4 +24,13 @@
     <string name="check_internet_connection">Check internet connection.</string>
     <string name="no_location">The location wasn\'t found.</string>
 
+    <string name="RAINER">There is a higher probability of rainfall.</string>
+    <string name="NO_RAIN_CHANGE">Humidity of the air does not change</string>
+
+    <string name="EXTREMAL_COLDER">It will be much colder than yesterday.</string>
+    <string name="COLDER">Gentle temperature drop.</string>
+    <string name="NO_CHANGE">Total temperature stabilization.</string>
+    <string name="WARMER">Humidity of the air does not change.</string>
+    <string name="EXTREMAL_WARMER">A sharp increase in temperaure</string>
+
 </resources>
