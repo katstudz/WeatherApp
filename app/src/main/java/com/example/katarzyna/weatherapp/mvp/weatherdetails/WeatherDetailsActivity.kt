@@ -1,17 +1,23 @@
 package com.example.katarzyna.weatherapp.mvp.weatherdetails
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.view.View.GONE
 import android.widget.ImageView
 import com.example.katarzyna.weatherapp.R
 import com.example.katarzyna.weatherapp.mvp.BasicActivity
 import com.example.katarzyna.weatherapp.utils.Common
+import com.example.katarzyna.weatherapp.utils.WeatherDescriptior
 import com.github.mikephil.charting.data.*
 import kotlinx.android.synthetic.main.weather_details_activity.*
 
 
 class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
+    override fun setDescription(weatherDescriptior: WeatherDescriptior) {
+        val descriptionText = weatherDescriptior.getDescription(this)
+        weather_forecast_description.setText(descriptionText)
+    }
 
     lateinit var weatherDetailsPresenter: WeatherDetailsPresenter
 
@@ -20,12 +26,11 @@ class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
         setContentView(R.layout.weather_details_activity)
         chart.setNoDataText("")
 
-
         weatherDetailsPresenter = WeatherDetailsPresenter(this.getString(R.string.aeris_client_id), this.getString(R.string.aeris_client_secret))
         weatherDetailsPresenter.attachView(this)
 
         val cityName = intent.getStringExtra(Common.CITY_NAME)
-        weatherDetailsPresenter.downloadData(cityName)
+        weatherDetailsPresenter.initData(cityName)
         city_name.text = cityName
         setButtons()
     }
@@ -33,14 +38,18 @@ class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
     private fun setButtons() {
         next.setColorFilter(Color.GRAY)
         past.setOnClickListener {
-            weatherDetailsPresenter.setPastData()
+            weatherDetailsPresenter.drawPastData()
             changeArrowState(past, next)
         }
 
         next.setOnClickListener {
-            weatherDetailsPresenter.setForecastData()
+            weatherDetailsPresenter.drawForecastData()
             changeArrowState(next, past)
         }
+    }
+
+    override fun hideProgressBar() {
+        progress_bar.visibility = GONE
     }
 
     private fun changeArrowState(inactive: ImageView, active: ImageView){

@@ -41,7 +41,6 @@ class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
 
         setFavouritePlaceWeather()
         setButtons()
-
     }
 
     private fun setFavouritePlaceWeather() {
@@ -52,7 +51,6 @@ class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
             cityWeatherPresenter.getAcctualObservation(cityName)
             city_name_edit_text.setText(cityName, TextView.BufferType.EDITABLE)
         }
-
     }
 
     private fun setButtons(){
@@ -63,7 +61,8 @@ class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
 
 
         set_city_as_favourite.setOnClickListener {
-            cityWeatherPresenter.checkCityNameCorrectSetAsFavourite(city_name_edit_text.text.toString())
+            setCityAsFavourite(city_name_edit_text.text.toString())
+            showAlert(getString(R.string.set_as_favourite))
         }
 
         acctual_position.setOnClickListener {
@@ -93,7 +92,7 @@ class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
         city_name_edit_text.setText(cityName, TextView.BufferType.EDITABLE)
     }
 
-    override fun setCityAsFavourite(cityName: String) {
+    fun setCityAsFavourite(cityName: String) {
         val myPrefs = this.getSharedPreferences(Common.FILE, Context.MODE_PRIVATE)
         val editor = myPrefs.edit()
         editor.putString(FAVOURITE_CITY_KEY, cityName)
@@ -101,7 +100,7 @@ class ChooseCityActivity : BasicActivity(), CityWeatherContract.View {
     }
 
     override fun setWeatherInfoForCity(observation: Ob) {
-        temperature.text = "${observation.tempC} C"
+        temperature.text = "${observation.tempC} " + 0x00B0.toChar() + "C"
         humidity.text = "${getString(R.string.humidity)} ${observation.humidity}%"
         cloudly.text = "${getString(R.string.clouds)} ${CloudType.getCovarageInProcent(observation.cloudsCoded)}%"
         more_details.visibility = VISIBLE

@@ -2,7 +2,9 @@ package com.example.katarzyna.weatherapp.mvp.weatherdetails
 
 import com.example.katarzyna.weatherapp.datamodel.*
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
+import com.example.katarzyna.weatherapp.utils.DayAvr
 import com.example.katarzyna.weatherapp.utils.EnumError
+import com.example.katarzyna.weatherapp.utils.WeatherDescriptior
 import com.github.mikephil.charting.data.BarEntry
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -16,19 +18,20 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
     private var openWeatherMap = ApiClient.create()
     private lateinit var forecastBarEntry:ArrayList<BarEntry>
     private lateinit var yesterdayBarEntry: ArrayList<BarEntry>
+    private var notInit = true
 
-    private lateinit var forecastPeriods: List<Period>
+    private var forecastPeriods: MutableList<Period> = arrayListOf()
     private var yesterdayPeriods: MutableList<PastObservationPeriods> =  arrayListOf()
 
-    override fun setForecastData() {
+    override fun drawForecastData() {
         view.drawChart(forecastBarEntry)
     }
 
-    override fun setPastData() {
+    override fun drawPastData() {
         view.drawChart(yesterdayBarEntry)
     }
 
-    override fun downloadData(cityName: String){
+    override fun initData(cityName: String){
         getForecast(cityName)
         getPastObservations(cityName)
     }
@@ -39,8 +42,7 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ forecastResponse: ForecastResponse ->
                     setForecastData(forecastResponse.response.first().periods)
-                },
-                        { error ->
+                }, { error ->
                             view.showErrorAlert(EnumError.OTHER)
                 })
     }
@@ -51,11 +53,17 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({pastObservation: PastObservation? ->
                     prepareYesterdayData(pastObservation!!.response.periods)
-                },
-                        {
-                            error ->
-                            view.showErrorAlert(EnumError.OTHER)
-                        })
+                    if(notInit)
+                        initRestIfView()
+                }, {
+                    error ->
+                    view.showErrorAlert(EnumError.OTHER)
+                })
+    }
+
+    private fun initRestIfView() {
+        getFutureWeatherDescription()
+        view.hideProgressBar()
     }
 
 
@@ -71,8 +79,17 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
         yesterdayBarEntry = chartEntries.subList(0, 24).toList() as ArrayList<BarEntry>
     }
 
-    private fun getFutureWeatherDescription(){
+    fun getFutureWeatherDescription(){
+        val forecastTempAvr = forecastPeriods.map { it.avgTempC}.average()
+        val forecastHumAvr = forecastPeriods.map { it.humidity}.average()
+        val forecastDayAvr = DayAvr(forecastTempAvr, forecastHumAvr)
 
+        val yesterdayTempAvr = yesterdayPeriods.map { it.ob.tempC}.average()
+        val yesterdayHumAvr = yesterdayPeriods.map { it.ob.tempC}.average()
+        val yesterdayDayAvr = DayAvr(yesterdayTempAvr, yesterdayHumAvr)
+
+        val descriptior = WeatherDescriptior(yesterdayDayAvr, forecastDayAvr)
+        view.setDescription(descriptior)
     }
 
     private fun isFullHour(calendar: Calendar):Boolean{
@@ -80,9 +97,9 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
     }
 
     private fun setForecastData(forecastPeriods: List<Period>) {
-        this.forecastPeriods = forecastPeriods
+        this.forecastPeriods = forecastPeriods as MutableList<Period>
         forecastBarEntry = forecastDataToChartEntries(forecastPeriods)
-        setForecastData()
+        drawForecastData()
     }
 
     private fun forecastDataToChartEntries(forecastPeriods: List<Period>): ArrayList<BarEntry>{

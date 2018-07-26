@@ -6,6 +6,13 @@ import com.example.katarzyna.weatherapp.R
 import com.example.katarzyna.weatherapp.utils.EnumError
 
 abstract class BasicActivity: AppCompatActivity(), BaseContract.BaseView {
+    fun showAlert(string: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(string)
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     override fun showErrorAlert(enumError: EnumError) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.title_city_weather_error_message)

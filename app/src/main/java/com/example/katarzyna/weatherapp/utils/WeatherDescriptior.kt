@@ -3,15 +3,16 @@ package com.example.katarzyna.weatherapp.utils
 import android.content.Context
 import com.example.katarzyna.weatherapp.R
 
-class WeatherDescription {
+class WeatherDescriptior {
+
     var temp:TempEnum = TempEnum.NO_CHANGE
     var moreRainy = false
 
-    private var SUBIECTIVE_EXTREMA_CHANGE_TEMP_LIMIT  = 10
+    private var SUBIECTIVE_EXTREMA_CHANGE_TEMP_LIMIT  = 17
     private var SUBIECTIVE_CHANGE_TEMP_LIMIT  = 5
     private var SUBIECTIVE_HUMIDITY_LIMIT  = 0.2
 
-    fun setDescriptionParam(yesterday:DayAvr, future:DayAvr){
+    constructor(yesterday:DayAvr, future:DayAvr){
 
         if (yesterday.avrHumidity + SUBIECTIVE_HUMIDITY_LIMIT < future.avrHumidity)
             moreRainy = true
@@ -36,6 +37,10 @@ class WeatherDescription {
             TempEnum.EXTREMAL_WARMER-> tempDescription = context.getString(R.string.EXTREMAL_WARMER)
         }
 
+        if (moreRainy)
+            tempDescription += ("\n") + context.getString(R.string.RAINER)
+        else
+            tempDescription += ("\n") + context.getString(R.string.NO_RAIN_CHANGE)
         return tempDescription
     }
 

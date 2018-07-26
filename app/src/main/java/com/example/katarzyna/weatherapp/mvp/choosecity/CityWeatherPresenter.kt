@@ -63,17 +63,6 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
     }
 
 
-    override fun checkCityNameCorrectSetAsFavourite(cityName: String) {
-        openWeatherMap.getAcctualObservations(cityName, clientId , clientSecret)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ aerisObservation: AerisObservation ->
-                    view.setCityAsFavourite(aerisObservation.response.place.getString())
-                }, { error ->
-                    view.showErrorAlert(EnumError.OTHER)
-                })
-    }
-
     override fun getLastCityName(): String {
         return lastPlace.getString()
     }

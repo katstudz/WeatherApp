@@ -11,14 +11,12 @@ class CityWeatherContract {
     interface Presenter: BaseContract.BasePresenter<View>{
         fun getAcctualObservation(cityName: String)
         fun getLastCityName():String
-        fun checkCityNameCorrectSetAsFavourite(cityName: String)
         fun getWeatherForAcctualPosition(location : Location)
     }
 
     interface View: BaseContract.BaseView {
         fun setWeatherInfoForCity(observation: Ob)
         fun setWeatherIcon(weatherCondition: WeatherConditionEnum)
-        fun setCityAsFavourite(cityName: String)
         fun setAcctualLocationCityName(cityName: String)
     }
 }
