@@ -6,20 +6,18 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_rain_100dp"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_rain_100dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.choosecity.ChooseCityActivity">
-        <!--<activity android:name=".mvp.weatherdetails.WeatherDetailsActivity">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".mvp.choosecity.ChooseCityActivity"/>-->
         <activity android:name=".activity.weatherdetails.WeatherDetailsActivity"/>
     </application>
 

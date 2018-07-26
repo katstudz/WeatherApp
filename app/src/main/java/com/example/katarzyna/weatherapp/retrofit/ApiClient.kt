@@ -38,13 +38,13 @@ interface ApiClient {
 
             val httpClient = OkHttpClient.Builder()
                 httpClient.addInterceptor(logging)
-                httpClient.addInterceptor {
-                    chain ->
-                    val original = chain.request()
-                    val requestBuilder = original.newBuilder()
-                    val request = requestBuilder.build()
-                    chain.proceed(request)
-                }
+//                httpClient.addInterceptor {
+//                    chain ->
+//                    val original = chain.request()
+//                    val requestBuilder = original.newBuilder()
+//                    val request = requestBuilder.build()
+//                    chain.proceed(request)
+//                }
 
                 return httpClient.build()
         }

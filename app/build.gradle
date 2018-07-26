@@ -53,7 +53,8 @@ dependencies {
     //location
     implementation "com.google.android.gms:play-services-location:11.8.0"
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    testImplementation 'org.mockito:mockito-core:2.8.47'
 
 
 }

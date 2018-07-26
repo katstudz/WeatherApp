@@ -62,7 +62,6 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
             return WeatherConditionEnum.SUNNY
     }
 
-
     override fun getLastCityName(): String {
         return lastPlace.getString()
     }
@@ -81,7 +80,5 @@ class CityWeatherPresenter(private val clientId: String, private val clientSecre
                     view.showErrorAlert(EnumError.OTHER)
                 })
     }
-
-
 
 }

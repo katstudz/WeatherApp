@@ -13,11 +13,6 @@ import kotlinx.android.synthetic.main.weather_details_activity.*
 
 
 class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
-    override fun setDescription(weatherDescriptior: WeatherDescriptior) {
-        val descriptionText = weatherDescriptior.getDescription(this)
-        weather_forecast_description.setText(descriptionText)
-    }
-
     lateinit var weatherDetailsPresenter: WeatherDetailsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +72,12 @@ class WeatherDetailsActivity: BasicActivity(), WeatherDetailsContract.View {
             chart.legend.isEnabled = false
             chart.notifyDataSetChanged()
             chart.invalidate()
-
     }
+
+    override fun setDescription(weatherDescriptior: WeatherDescriptior) {
+        val descriptionText = weatherDescriptior.getDescription(this)
+        weather_forecast_description.setText(descriptionText)
+    }
+
 
 }

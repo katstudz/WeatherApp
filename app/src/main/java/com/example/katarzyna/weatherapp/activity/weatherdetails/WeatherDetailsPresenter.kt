@@ -8,6 +8,7 @@ import com.example.katarzyna.weatherapp.utils.WeatherDescriptior
 import com.github.mikephil.charting.data.BarEntry
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.lang.Integer.min
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,8 +33,13 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
     }
 
     override fun initData(cityName: String){
-        getForecast(cityName)
-        getPastObservations(cityName)
+        var reformadCityName = reformatCityName(cityName)
+        getForecast(reformadCityName)
+        getPastObservations(reformadCityName)
+    }
+
+    private fun reformatCityName(cityName: String): String{
+        return cityName.replace(" ", "+")
     }
 
     private fun getForecast(cityName: String) {
@@ -75,8 +81,12 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
                 chartEntries.add(BarEntry(calendar!!.time.hours.toFloat(), period.ob.tempC.toFloat()))
                 yesterdayPeriods.add(period)
             }
+            else if(periods.size < 30){
+                chartEntries.add(BarEntry(calendar!!.time.hours.toFloat(), period.ob.tempC.toFloat()))
+                yesterdayPeriods.add(period)
+            }
         }
-        yesterdayBarEntry = chartEntries.subList(0, 24).toList() as ArrayList<BarEntry>
+        yesterdayBarEntry = chartEntries.subList(0, minOf(24, yesterdayPeriods.size)).toList() as ArrayList<BarEntry>
     }
 
     fun getFutureWeatherDescription(){
@@ -117,8 +127,6 @@ class WeatherDetailsPresenter(private val clientId: String, private val clientSe
         calendar.time = sdf.parse(time)
         return calendar
     }
-
-
 
     override fun attachView(view: WeatherDetailsContract.View) {
         this.view = view
