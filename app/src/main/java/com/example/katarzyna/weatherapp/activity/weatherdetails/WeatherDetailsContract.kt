@@ -1,6 +1,6 @@
-package com.example.katarzyna.weatherapp.mvp.weatherdetails
+package com.example.katarzyna.weatherapp.activity.weatherdetails
 
-import com.example.katarzyna.weatherapp.mvp.BaseContract
+import com.example.katarzyna.weatherapp.activity.BaseContract
 import com.example.katarzyna.weatherapp.utils.WeatherDescriptior
 import com.github.mikephil.charting.data.BarEntry
 import java.util.ArrayList

@@ -1,4 +1,4 @@
-package com.example.katarzyna.weatherapp.mvp.choosecity
+package com.example.katarzyna.weatherapp.activity.choosecity
 
 import android.app.Activity
 import android.content.Context
@@ -14,8 +14,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.example.katarzyna.weatherapp.R
 import com.example.katarzyna.weatherapp.datamodel.Ob
-import com.example.katarzyna.weatherapp.mvp.BasicActivity
-import com.example.katarzyna.weatherapp.mvp.weatherdetails.WeatherDetailsActivity
+import com.example.katarzyna.weatherapp.activity.BasicActivity
+import com.example.katarzyna.weatherapp.activity.weatherdetails.WeatherDetailsActivity
 import com.example.katarzyna.weatherapp.utils.CloudType
 import com.example.katarzyna.weatherapp.utils.Common
 import com.example.katarzyna.weatherapp.utils.EnumError

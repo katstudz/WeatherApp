@@ -1,9 +1,8 @@
-package com.example.katarzyna.weatherapp.mvp.choosecity
+package com.example.katarzyna.weatherapp.activity.choosecity
 
 import android.location.Location
 import com.example.katarzyna.weatherapp.datamodel.Ob
-import com.example.katarzyna.weatherapp.mvp.BaseContract
-import com.example.katarzyna.weatherapp.utils.EnumError
+import com.example.katarzyna.weatherapp.activity.BaseContract
 import com.example.katarzyna.weatherapp.utils.WeatherConditionEnum
 
 class CityWeatherContract {

@@ -1,4 +1,4 @@
-package com.example.katarzyna.weatherapp.mvp
+package com.example.katarzyna.weatherapp.activity
 
 import com.example.katarzyna.weatherapp.utils.EnumError
 

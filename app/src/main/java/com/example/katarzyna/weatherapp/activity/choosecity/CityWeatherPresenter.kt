@@ -1,4 +1,4 @@
-package com.example.katarzyna.weatherapp.mvp.choosecity
+package com.example.katarzyna.weatherapp.activity.choosecity
 
 import android.location.Location
 import com.example.katarzyna.weatherapp.datamodel.*

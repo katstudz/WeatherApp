@@ -1,12 +1,11 @@
-package com.example.katarzyna.weatherapp.mvp.weatherdetails
+package com.example.katarzyna.weatherapp.activity.weatherdetails
 
 import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View.GONE
 import android.widget.ImageView
 import com.example.katarzyna.weatherapp.R
-import com.example.katarzyna.weatherapp.mvp.BasicActivity
+import com.example.katarzyna.weatherapp.activity.BasicActivity
 import com.example.katarzyna.weatherapp.utils.Common
 import com.example.katarzyna.weatherapp.utils.WeatherDescriptior
 import com.github.mikephil.charting.data.*

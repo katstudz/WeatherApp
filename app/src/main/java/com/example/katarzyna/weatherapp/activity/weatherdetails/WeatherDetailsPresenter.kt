@@ -1,4 +1,4 @@
-package com.example.katarzyna.weatherapp.mvp.weatherdetails
+package com.example.katarzyna.weatherapp.activity.weatherdetails
 
 import com.example.katarzyna.weatherapp.datamodel.*
 import com.example.katarzyna.weatherapp.retrofit.ApiClient
